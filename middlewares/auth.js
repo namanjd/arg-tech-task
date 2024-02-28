@@ -6,7 +6,6 @@ const checkUserExist = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const checkUser = await findUserByEmail({ email });
-    console.log(checkUser);
     if (checkUser) {
       const encrypted = checkUser.password;
       const checkPass = bcrypt.compareSync(password, encrypted);
@@ -27,9 +26,13 @@ const checkUserExist = async (req, res, next) => {
 const authenticateUser = async (req, res, next) => {
   try {
     const { authorization } = req.headers
-    const decode = jwt.verify(authorization.split(' ')[1], process.env.JWT_SECRET)
-    if (decode) {
-      next()
+    if (authorization) {
+      const decode = jwt.verify(authorization.split(' ')[1], process.env.JWT_SECRET)
+      if (decode) {
+        next()
+      }
+    } else {
+      res.json('Please provide jwt token')
     }
   } catch (error) {
     console.log(error)
