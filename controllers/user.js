@@ -12,7 +12,7 @@ function genPassword(plainText) {
 function genToken(user) {
   const token = jwt.sign({
     data: user.id
-  }, process.env.JWT_SECRET, { expiresIn: 30000 }); // in seconds
+  }, process.env.JWT_SECRET, { expiresIn: 300 }); // in seconds
   return token
 }
 
